@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Contact | North Fork Marketing{% endblock %}
+{% block content %}
+<main id="main" class="contact-page">
+  <h1>GET IN TOUCH, GET A QUOTE OR IF YOU JUST<br class="contact-heading-break"> WANT TO TALK TO US IDK</h1>
+  <div class="contact-layout">
+    <form id="contact-form" class="contact-form" aria-label="Contact North Fork Marketing">
+      <p class="form-note">Fields marked with * are required.</p>
+      <div class="form-field">
+        <label for="contact-name">Name *</label>
+        <input id="contact-name" name="name" type="text" autocomplete="name" maxlength="120" required>
+      </div>
+      <div class="form-row">
+        <div class="form-field">
+          <label for="contact-email">Email *</label>
+          <input id="contact-email" name="email" type="email" autocomplete="email" maxlength="254" required>
+        </div>
+        <div class="form-field">
+          <label for="contact-phone">Phone <span>(optional)</span></label>
+          <input id="contact-phone" name="phone" type="tel" autocomplete="tel" maxlength="40" pattern="[0-9+().\s\-xX]*" title="Enter a phone number using numbers, spaces, parentheses, +, -, or an extension.">
+        </div>
+      </div>
+      <div class="form-field">
+        <label for="contact-message">Message *</label>
+        <textarea id="contact-message" name="message" rows="5" maxlength="5000" placeholder="Tell us what you have in mind." required></textarea>
+      </div>
+      <p class="form-note">You can save an inquiry here. For a direct reply, call or email us while email delivery is being connected.</p>
+      <button type="submit">SUBMIT MESSAGE</button>
+      <p id="contact-status" class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+      <noscript><p>Please enable JavaScript to use this form, or contact us by phone or email.</p></noscript>
+    </form>
+    <section class="contact-card" aria-labelledby="contact-details-heading">
+      <h2 id="contact-details-heading">LET’S TALK.</h2>
+      <address class="contact-details">
+      <div class="contact-detail"><span>CALL US</span><a href="tel:+16319059595">(631)905-9595</a></div>
+      <div class="contact-detail"><span>EMAIL US</span><a href="mailto:northforkmarketing@gmail.com">northforkmarketing@gmail.com</a></div>
+      <div class="contact-detail"><span>JOE &amp; FRANCIS</span><a href="mailto:joeandfrancismail@gmail.com">joeandfrancismail@gmail.com</a></div>
+    </address>
+    </section>
+  </div>
+</main>
+<script src="{{ url_for('static', path='/js/contact.js') }}" defer></script>
+{% endblock %}

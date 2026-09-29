@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}About Us | North Fork Marketing{% endblock %}
+
+{% block content %}
+<main id="main" class="about-page">
+  <section class="about-story" aria-labelledby="about-heading">
+    <h1 id="about-heading">WHY SHOULD I WORK WITH THESE GUYS?</h1>
+    <p>To be quite honest, there’s probably nothing the makes us totally different from other marketing agencies. And we’re okay with that.</p>
+    <p>What we do have is a genuine passion for social media, marketing and helping businesses grow. Whether that is social media, drone content, email marketing, events, or something completely different, we want to find ways to make your business better.</p>
+    <p>We’re born and raised on the North Fork and we’ve always looked around our community thinking, “How can we help?” We’ve already done that through Aldrich Sports, building relationships with local businesses through sponsorships, events and collaborations.</p>
+    <p>Now, we want to do more.</p>
+    <p>So here we are. North Fork Marketing.</p>
+  </section>
+  <section class="team" aria-labelledby="team-heading">
+    <h2 id="team-heading">MEET THE TEAM!</h2>
+    <div class="team-grid">
+      <figure class="team-member">
+        <img src="{{ url_for('static', path='/images/joseph-aiello.png') }}" alt="Joseph Aiello" width="1320" height="1432">
+        <figcaption><h3>THE BOSS</h3><p>JOSEPH AIELLO</p></figcaption>
+      </figure>
+      <figure class="team-member">
+        <img src="{{ url_for('static', path='/images/francis-buonaiuto.png') }}" alt="Francis Buonaiuto" width="1320" height="1297">
+        <figcaption><h3>THE NICER BOSS</h3><p>FRANCIS BUONAIUTO</p></figcaption>
+      </figure>
+    </div>
+  </section>
+</main>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main id="main" class="landing">
+  <h1 class="hero-title"><span>NORTH FORK</span>MARKETING</h1>
+  <section class="hero-copy" aria-labelledby="intro-heading">
+    <h2 id="intro-heading">ALL OF YOUR<br>MARKETING NEEDS</h2>
+    <p>We work with local businesses on the north fork<br class="desktop-break">
+      and beyond to help grow their online presence.<br class="desktop-break">
+      Here are some of our clients and an example of our<br class="desktop-break">
+      reach</p>
+    <div class="hero-actions">
+      <a class="hero-button hero-button-primary" href="#clients">Explore Our Clients</a>
+      <a class="hero-button hero-button-secondary" href="/contact">Contact Us</a>
+    </div>
+  </section>
+  <section id="clients" class="phones" aria-label="Some of our clients">
+    <div class="phone phone-box"><img src="{{ url_for('static', path='/images/box-pickleball.png') }}" alt="Box Pickleball Instagram profile" width="2000" height="3208" fetchpriority="high"></div>
+    <div class="phone phone-run"><img src="{{ url_for('static', path='/images/run-club.png') }}" alt="Mattituck Run Club Instagram profile" width="2000" height="3208"></div>
+    <div class="phone phone-augusta"><img src="{{ url_for('static', path='/images/augusta.png') }}" alt="Augusta Lawn Care Services of Westhampton Instagram profile" width="2000" height="3208"></div>
+    <div class="phone phone-beer"><img src="{{ url_for('static', path='/images/wish-you-were-beer.png') }}" alt="Wish You Were Beer Instagram profile" width="2000" height="3208"></div>
+    <div class="phone phone-aldrich"><img src="{{ url_for('static', path='/images/aldrich-sports.png') }}" alt="Aldrich Sports Instagram profile" width="2000" height="3208"></div>
+  </section>
+</main>
+{% endblock %}
