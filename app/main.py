@@ -2,6 +2,8 @@ from pathlib import Path
 from datetime import datetime, timezone
 import sqlite3
 
+from app.clients import list_clients
+
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
 from fastapi.responses import HTMLResponse
@@ -67,3 +69,9 @@ def submit_contact(submission: ContactSubmission):
     except (OSError, sqlite3.Error) as exc:
         raise HTTPException(status_code=503, detail="We couldn’t save your message. Please try again or contact us directly.") from exc
     return {"message": "Your message has been saved. For a direct reply, please call or email us while email delivery is being connected."}
+
+
+@app.get("/clients", response_class=HTMLResponse)
+def clients(request: Request):
+    catalog = list_clients()
+    return templates.TemplateResponse(request=request, name="clients.html", context={"clients": catalog, "client_data": [client.model_dump(mode="json") for client in catalog]})

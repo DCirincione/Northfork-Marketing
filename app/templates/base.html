@@ -17,7 +17,7 @@
       <nav class="navigation" aria-label="Main navigation">
         <a href="/"{% if request.url.path == '/' %} class="active" aria-current="page"{% endif %}>HOME</a>
         <a href="/about"{% if request.url.path == '/about' %} class="active" aria-current="page"{% endif %}>ABOUT</a>
-        <a href="/#clients">CLIENTS</a>
+        <a href="/clients"{% if request.url.path == "/clients" %} class="active" aria-current="page"{% endif %}>CLIENTS</a>
         <a href="/contact"{% if request.url.path == '/contact' %} class="active" aria-current="page"{% endif %}>CONTACT</a>
         <div class="social-links">
           <a class="social-icon" href="https://www.instagram.com/nofomarketing/" target="_blank" rel="noopener noreferrer" aria-label="North Fork Marketing on Instagram (opens in a new tab)">
@@ -37,7 +37,7 @@
         </a>
         <div class="footer-links">
           <nav aria-label="Footer navigation">
-            <a href="/">Home</a><a href="/about">About</a><a href="/#clients">Clients</a><a href="/contact">Contact</a>
+            <a href="/">Home</a><a href="/about">About</a><a href="/clients">Clients</a><a href="/contact">Contact</a>
           </nav>
           <p>North Fork Marketing &copy; {{ current_year }}</p>
         </div>

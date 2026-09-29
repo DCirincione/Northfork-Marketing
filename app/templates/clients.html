@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Our Clients | North Fork Marketing{% endblock %}
+{% block content %}
+<main id="main" class="clients-page">
+  <h1>CHECK OUT OUR AMAZING CLIENTS</h1>
+  {% if clients %}
+  <section class="client-carousel" aria-label="Our clients" aria-roledescription="carousel" tabindex="0">
+    <div class="carousel-layout">
+      <button class="carousel-arrow" id="clients-previous" type="button" aria-label="Previous client" hidden>‹</button>
+      <div class="carousel-window">
+        <div class="client-track">
+          {% for client in clients %}
+          <article class="client-slide" data-client-id="{{ client.id }}" aria-label="{{ loop.index }} of {{ clients|length }}: {{ client.name }}" aria-roledescription="slide">
+            <button class="client-card" type="button" aria-haspopup="dialog" aria-controls="client-dialog" data-client-index="{{ loop.index0 }}">
+              <span class="client-art client-art-{{ client.image_kind }}"><img src="{{ client.image }}" alt="{{ client.name }}{% if client.image_kind == 'phone' %} Instagram profile{% endif %}" width="600" height="600"></span>
+              <span class="client-name">{{ client.name }}</span>
+              {% if client.location %}<span class="client-location">{{ client.location }}</span>{% endif %}
+              <span class="client-card-action">Explore client <span aria-hidden="true">↗</span></span>
+            </button>
+          </article>
+          {% endfor %}
+        </div>
+      </div>
+      <button class="carousel-arrow" id="clients-next" type="button" aria-label="Next client" hidden>›</button>
+    </div>
+    <div class="carousel-controls" hidden>
+      <span id="carousel-position"></span>
+      <button id="carousel-pause" type="button" aria-pressed="false">Pause slideshow</button>
+    </div>
+    <p id="carousel-announcement" class="sr-only" aria-live="polite" aria-atomic="true"></p>
+  </section>
+  <noscript><p>Select a client after enabling JavaScript to view their details.</p></noscript>
+  {% else %}<p>Our client showcase is coming soon.</p>{% endif %}
+</main>
+<dialog id="client-dialog" aria-labelledby="client-dialog-name">
+  <button class="dialog-close" type="button" aria-label="Close client details">×</button>
+  <div class="client-dialog-layout">
+    <div id="client-dialog-media"></div>
+    <div class="client-dialog-copy">
+      <p id="client-dialog-location"></p>
+      <h2 id="client-dialog-name"></h2>
+      <p id="client-dialog-description"></p>
+      <section id="client-project" hidden><h3>OUR WORK TOGETHER</h3><p id="client-dialog-project"></p></section>
+      <nav id="client-dialog-links" aria-label="Client website and social profiles"></nav>
+    </div>
+  </div>
+</dialog>
+<script id="client-data" type="application/json">{{ client_data|tojson }}</script>
+<script src="{{ url_for('static', path='/js/clients.js') }}" defer></script>
+{% endblock %}
