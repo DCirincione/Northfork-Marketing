@@ -1,5 +1,7 @@
 """Public client catalog. Replace this loader with a database repository when admin is added."""
 import json
+import os
+from app import supabase_api as db
 from pathlib import Path
 from typing import Literal
 
@@ -37,7 +39,17 @@ class Client(BaseModel):
 
 
 def list_clients() -> list[Client]:
-    clients = [Client.model_validate(record) for record in json.loads(CATALOG_PATH.read_text())]
+    if os.getenv('SUPABASE_URL') and os.getenv('SUPABASE_PUBLISHABLE_KEY'):
+        try:
+            records = db.request('GET', '/rest/v1/clients', params={'select': '*', 'published': 'eq.true', 'order': 'display_order.asc,id.asc'})
+        except db.SupabaseError as exc:
+            if exc.code != 'PGRST205':
+                raise
+            # Preserve the existing showcase only until the admin migration is applied.
+            records = json.loads(CATALOG_PATH.read_text())
+    else:
+        records = json.loads(CATALOG_PATH.read_text())
+    clients = [Client.model_validate(record) for record in records]
     if len({client.id for client in clients}) != len(clients):
         raise ValueError("Client IDs must be unique")
     return sorted((client for client in clients if client.published), key=lambda client: (client.display_order, client.id))

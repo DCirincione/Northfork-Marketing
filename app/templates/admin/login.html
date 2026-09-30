@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% block title %}Admin Login | North Fork Marketing{% endblock %}
+{% block content %}
+<main class="login-page">
+  <form id="admin-login" class="panel login-panel">
+    <p class="eyebrow">NORTH FORK MARKETING</p>
+    <h1>Welcome back.</h1><p class="muted">Sign in to manage messages and clients.</p>
+    <label for="login-email">Email</label><input id="login-email" name="email" type="email" autocomplete="username" required maxlength="254">
+    <label for="login-password">Password</label><input id="login-password" name="password" type="password" autocomplete="current-password" required maxlength="1024">
+    <button type="submit" class="primary">Sign in</button>
+    <p id="login-status" class="status" role="status" tabindex="-1"></p>
+    <p class="muted small">Access is limited to approved administrators. Contact the site owner if you need access or a password reset.</p>
+  </form>
+</main>
+{% endblock %}

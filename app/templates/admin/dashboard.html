@@ -1,0 +1,54 @@
+{% extends "admin/base.html" %}
+{% block content %}
+<main class="dashboard" id="admin-dashboard">
+  <div class="page-heading"><div><p class="eyebrow">YOUR WORKSPACE</p><h1>Dashboard</h1></div><button id="logout" type="button">Sign out</button></div>
+  <div class="admin-tabs" role="tablist" aria-label="Dashboard sections">
+    <button id="messages-tab" role="tab" aria-selected="true" aria-controls="messages-panel" type="button">Contact messages</button>
+    <button id="clients-tab" role="tab" aria-selected="false" aria-controls="clients-panel" tabindex="-1" type="button">Clients</button>
+  </div>
+  <p id="dashboard-status" class="status" role="status" tabindex="-1"></p>
+  <section id="messages-panel" role="tabpanel" aria-labelledby="messages-tab">
+    <div class="section-heading"><h2>Inbox</h2><div class="toolbar"><label class="check"><input id="unread-only" type="checkbox"> Unread only</label><button id="refresh-messages" type="button">Refresh</button></div></div>
+    <div id="message-list" class="message-list" aria-live="polite"></div>
+    <div class="pagination"><button id="messages-previous" type="button">Previous</button><span id="messages-page"></span><button id="messages-next" type="button">Next</button></div>
+  </section>
+  <section id="clients-panel" role="tabpanel" aria-labelledby="clients-tab" hidden>
+    <div class="section-heading"><div><h2>Client showcase</h2><p class="muted">Drag cards to reorder, or use the up and down buttons.</p></div><button id="add-client" class="primary" type="button">+ Add client</button></div>
+    <div id="client-list" class="admin-client-list"></div>
+    <div class="order-actions"><button id="save-order" class="primary" type="button" disabled>Save order</button><span id="order-status" class="muted" role="status">Order is saved.</span></div>
+  </section>
+</main>
+<dialog id="message-dialog" aria-labelledby="message-title">
+  <button class="close-dialog" type="button" aria-label="Close message">×</button>
+  <p class="eyebrow">CONTACT INQUIRY</p><h2 id="message-title"></h2>
+  <p id="message-date" class="muted"></p><div id="message-contact"></div><p id="message-body" class="message-body"></p>
+  <button id="toggle-message-read" type="button" class="primary"></button><p id="message-status" role="status"></p>
+</dialog>
+<dialog id="client-editor" aria-labelledby="editor-title">
+  <button class="close-dialog" type="button" aria-label="Close client editor">×</button>
+  <h2 id="editor-title">Add client</h2>
+  <form id="client-form">
+    <div class="form-grid">
+      <div><label for="client-name-input">Client name *</label><input id="client-name-input" name="name" required maxlength="120"></div>
+      <div><label for="client-id-input">Client ID *</label><input id="client-id-input" name="id" required pattern="[a-z0-9-]{1,100}" maxlength="100"><small>Lowercase letters, numbers, and hyphens. Permanent once saved.</small></div>
+      <div><label for="client-location-input">Location</label><input id="client-location-input" name="location" maxlength="180" placeholder="Mattituck, NY"></div>
+      <div><label for="client-image-kind">Image layout</label><select id="client-image-kind" name="image_kind"><option value="artwork">Square artwork / photo</option><option value="phone">Phone mockup</option></select></div>
+    </div>
+    <label for="client-image-input">Card image URL *</label><input id="client-image-input" name="image" required placeholder="Upload below or paste an image URL">
+    <label for="client-cover-upload">Upload card image</label><input id="client-cover-upload" type="file" accept="image/png,image/jpeg,image/webp"><small>PNG, JPEG, or WebP, up to 4 MB. Uploaded images are publicly accessible.</small>
+    <img id="client-cover-preview" class="cover-preview" alt="Client card preview" hidden>
+    <label for="client-description">About the client</label><textarea id="client-description" name="description" rows="3" maxlength="5000"></textarea>
+    <label for="client-project-details">Our work together</label><textarea id="client-project-details" name="project_details" rows="4" maxlength="10000"></textarea>
+    <div class="form-grid">
+      <div><label for="client-website">Website</label><input id="client-website" name="website_url" type="url" placeholder="https://"></div>
+      <div><label for="client-instagram">Instagram</label><input id="client-instagram" name="instagram_url" type="url" placeholder="https://www.instagram.com/..."></div>
+      <div><label for="client-tiktok">TikTok</label><input id="client-tiktok" name="tiktok_url" type="url" placeholder="https://www.tiktok.com/@..."></div>
+    </div>
+    <label for="client-gallery">Additional photo URLs</label><textarea id="client-gallery" name="gallery" rows="3" placeholder="One image URL per line"></textarea>
+    <label for="client-gallery-upload">Upload additional photos</label><input id="client-gallery-upload" type="file" accept="image/png,image/jpeg,image/webp" multiple><small>Up to 20 gallery images.</small>
+    <label class="check"><input name="published" type="checkbox"> Published on the website</label>
+    <p id="editor-status" class="status" role="status" tabindex="-1"></p>
+    <div class="editor-actions"><button id="save-client" type="submit" class="primary">Save client</button><button id="delete-client" type="button" class="danger" hidden>Delete client</button></div>
+  </form>
+</dialog>
+{% endblock %}
