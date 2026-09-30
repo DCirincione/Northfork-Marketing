@@ -25,7 +25,7 @@ form.addEventListener('submit', async (event) => {
     if (!response.ok) {
       throw new Error(response.status === 422
         ? 'Please check your name, email, phone, and message, then try again.'
-        : 'We couldn’t save your message. Please try again or contact us directly.');
+        : 'We couldn’t confirm your message was saved. Please try again or contact us directly.');
     }
     status.textContent = result.message;
     form.reset();

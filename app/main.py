@@ -1,8 +1,10 @@
 from pathlib import Path
 from datetime import datetime, timezone
-import sqlite3
+
 
 from app.clients import list_clients
+from app.contact_storage import ContactStorageError, save_contact_message
+from app.notifications import notify_contact_message
 
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field
@@ -11,7 +13,6 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 BASE_DIR = Path(__file__).resolve().parent
-CONTACT_DB = BASE_DIR.parent / "data" / "contacts.sqlite3"
 
 app = FastAPI(title="Marketing Agency Website")
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
@@ -52,23 +53,12 @@ class ContactSubmission(BaseModel):
 @app.post("/api/contact", status_code=201)
 def submit_contact(submission: ContactSubmission):
     try:
-        CONTACT_DB.parent.mkdir(parents=True, exist_ok=True)
-        with sqlite3.connect(CONTACT_DB) as connection:
-            connection.execute("""CREATE TABLE IF NOT EXISTS contacts (
-                id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                email TEXT NOT NULL,
-                phone TEXT NOT NULL,
-                message TEXT NOT NULL,
-                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-            )""")
-            connection.execute(
-                "INSERT INTO contacts (name, email, phone, message) VALUES (?, ?, ?, ?)",
-                (submission.name, submission.email, submission.phone, submission.message),
-            )
-    except (OSError, sqlite3.Error) as exc:
-        raise HTTPException(status_code=503, detail="We couldn’t save your message. Please try again or contact us directly.") from exc
-    return {"message": "Your message has been saved. For a direct reply, please call or email us while email delivery is being connected."}
+        save_contact_message(submission.model_dump())
+    except ContactStorageError as exc:
+        raise HTTPException(status_code=503, detail="We couldn’t confirm your message was saved. Please try again or contact us directly.") from exc
+    notify_contact_message()
+    return {"message": "Thank you! Your message has been received."}
+
 
 
 @app.get("/clients", response_class=HTMLResponse)
