@@ -11,7 +11,6 @@
   let keyboardMode = false;
   let timer;
   carousel.classList.add('is-enhanced');
-  const pause = document.querySelector('#carousel-pause');
   const previous = document.querySelector('#clients-previous');
   const next = document.querySelector('#clients-next');
   previous.hidden = next.hidden = clients.length < 2;
@@ -35,8 +34,6 @@
     });
     document.querySelector('#carousel-position').textContent = `${active + 1} / ${clients.length}`;
     if (announce) document.querySelector('#carousel-announcement').textContent = clients[active].name;
-    pause.textContent = paused ? 'Play slideshow' : 'Pause slideshow';
-    pause.setAttribute('aria-pressed', String(paused));
     schedule();
   }
   function move(direction, announce = true) {
@@ -45,7 +42,6 @@
   }
   previous.addEventListener('click', () => move(-1));
   next.addEventListener('click', () => move(1));
-  pause.addEventListener('click', () => { paused = !paused; render(); });
   carousel.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
       event.preventDefault();

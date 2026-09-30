@@ -185,12 +185,11 @@
     if (orderDirty) { status('Save your new client order before opening the editor.'); return; }
     form.reset(); delete form.elements.id.dataset.custom; editingId = client?.id || null;
     $('#editor-title').textContent = client ? 'Edit client' : 'Add client';
-    for (const key of ['id', 'name', 'location', 'image', 'image_kind', 'description', 'project_details', 'website_url', 'instagram_url', 'tiktok_url']) {
-      form.elements[key].value = client?.[key] || (key === 'image_kind' ? 'artwork' : '');
+    for (const key of ['id', 'name', 'location', 'image', 'description', 'project_details', 'website_url', 'instagram_url', 'tiktok_url']) {
+      form.elements[key].value = client?.[key] || '';
     }
     form.elements.id.readOnly = !!client;
     form.elements.published.checked = client?.published || false;
-    form.elements.gallery.value = (client?.gallery || []).join('\n');
     $('#delete-client').hidden = !client;
     $('#editor-status').textContent = ''; editorDirty = false; previewCover(); editor.showModal();
   }
@@ -200,34 +199,29 @@
     if (!editingId && !form.elements.id.dataset.custom) form.elements.id.value = form.elements.name.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 100);
   });
   form.elements.id.addEventListener('input', () => { form.elements.id.dataset.custom = 'true'; });
-  form.elements.image.addEventListener('input', previewCover);
-  async function uploadImages(input, gallery) {
-    const files = [...input.files];
-    if (!files.length) return;
-    const existing = form.elements.gallery.value.split('\n').map(v => v.trim()).filter(Boolean);
-    if (gallery && existing.length + files.length > 20) { $('#editor-status').textContent = 'Use no more than 20 gallery images.'; input.value = ''; return; }
+  async function uploadImage(input) {
+    const file = input.files[0];
+    if (!file) return;
     uploads++; $('#save-client').disabled = true; $('#delete-client').disabled = true;
     $('#editor-status').textContent = 'Uploading…';
     try {
-      for (const file of files) {
-        if (file.size > 4 * 1024 * 1024) throw new Error('Each image must be 4 MB or smaller.');
-        if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error('Choose PNG, JPEG, or WebP images.');
-        const result = await api('uploads', {method: 'POST', file});
-        if (gallery) form.elements.gallery.value = [form.elements.gallery.value.trim(), result.url].filter(Boolean).join('\n');
-        else { form.elements.image.value = result.url; previewCover(); }
-        editorDirty = true;
-      }
+      if (file.size > 4 * 1024 * 1024) throw new Error('The image must be 4 MB or smaller.');
+      if (!['image/png', 'image/jpeg', 'image/webp'].includes(file.type)) throw new Error('Choose a PNG, JPEG, or WebP image.');
+      const result = await api('uploads', {method: 'POST', file});
+      form.elements.image.value = result.url;
+      previewCover(); editorDirty = true;
       $('#editor-status').textContent = 'Uploaded. Save the client to keep these changes.';
     } catch (error) { $('#editor-status').textContent = error.message; }
     finally { uploads--; input.value = ''; $('#save-client').disabled = $('#delete-client').disabled = uploads > 0; }
   }
-  $('#client-cover-upload').addEventListener('change', event => uploadImages(event.target, false));
-  $('#client-gallery-upload').addEventListener('change', event => uploadImages(event.target, true));
+  $('#client-cover-upload').addEventListener('change', event => uploadImage(event.target));
   form.addEventListener('submit', async event => {
     event.preventDefault(); if (uploads) return;
     const data = Object.fromEntries(new FormData(form));
     data.published = form.elements.published.checked;
-    data.gallery = data.gallery.split('\n').map(v => v.trim()).filter(Boolean);
+    if (!data.image) { $('#editor-status').textContent = 'Upload a square card image before saving.'; $('#client-cover-upload').focus(); return; }
+    data.image_kind = 'artwork';
+    data.gallery = editingId ? (clients.find(c => c.id === editingId).gallery || []) : [];
     for (const key of ['website_url', 'instagram_url', 'tiktok_url']) data[key] = data[key].trim() || null;
     data.display_order = editingId ? clients.find(c => c.id === editingId).display_order : Math.max(0, ...clients.map(c => c.display_order)) + 10;
     $('#save-client').disabled = $('#delete-client').disabled = true; saving = true; form.inert = true;
