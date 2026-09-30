@@ -56,7 +56,7 @@ def submit_contact(submission: ContactSubmission):
         save_contact_message(submission.model_dump())
     except ContactStorageError as exc:
         raise HTTPException(status_code=503, detail="We couldn’t confirm your message was saved. Please try again or contact us directly.") from exc
-    notify_contact_message()
+    notify_contact_message(submission.model_dump())
     return {"message": "Thank you! Your message has been received."}
 
 

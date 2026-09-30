@@ -9,7 +9,7 @@ import httpx
 logger = logging.getLogger(__name__)
 
 
-def notify_contact_message() -> bool:
+def notify_contact_message(contact: dict[str, str]) -> bool:
     topic = os.getenv('NTFY_TOPIC', '').strip()
     if not topic:
         return False
@@ -18,6 +18,10 @@ def notify_contact_message() -> bool:
     if parsed.scheme != 'https' or not parsed.netloc or parsed.username or parsed.password or parsed.query or parsed.fragment or not re.fullmatch(r'[A-Za-z0-9_-]{1,64}', topic):
         logger.warning('ntfy configuration is invalid; message remains saved in Supabase.')
         return False
+    lines = [f"Name: {contact['name']}", f"Email: {contact['email']}"]
+    phone = contact.get('phone', '').strip()
+    if phone:
+        lines.append(f"Phone: {phone}")
     headers = {}
     token = os.getenv('NTFY_TOKEN', '').strip()
     if token:
@@ -29,8 +33,8 @@ def notify_contact_message() -> bool:
             headers=headers,
             json={
                 'topic': topic,
-                'title': 'North Fork Marketing — new inquiry',
-                'message': 'A new contact message has been saved. Check your contact_messages inbox in Supabase.',
+                'title': 'New Contact Inquiry',
+                'message': '\n'.join(lines),
                 'tags': ['incoming_envelope'],
             },
             timeout=5.0,

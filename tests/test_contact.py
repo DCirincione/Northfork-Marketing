@@ -23,7 +23,7 @@ class ContactTests(unittest.TestCase):
         self.assertEqual(response.status_code, 201)
         save.assert_called_once_with(self.payload)
         self.assertIn('received', response.json()['message'])
-        self.notify.assert_called_once_with()
+        self.notify.assert_called_once_with(self.payload)
 
     def test_invalid_submissions_never_reach_storage(self):
         for change in [dict(name=' '), dict(email='invalid'), dict(message=' '), dict(message='x'*5001), dict(phone='abc'), dict(is_read=True)]:
