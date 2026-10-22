@@ -6,7 +6,7 @@
     <meta name="description" content="North Fork Marketing — all of your marketing needs. We work with local businesses on the north fork and beyond to help grow their online presence.">
     <title>{% block title %}North Fork Marketing{% endblock %}</title>
     <link rel="preload" href="{{ url_for('static', path='/fonts/bebas-neue.ttf') }}" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/styles.css') }}?v={{ styles_version }}">
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
@@ -37,7 +37,7 @@
         </a>
         <div class="footer-links">
           <nav aria-label="Footer navigation">
-            <a href="/">Home</a><a href="/about">About</a><a href="/clients">Clients</a><a href="/contact">Contact</a>
+            <a href="/">Home</a><a href="/about">About</a><a href="/clients">Clients</a><a href="/contact">Contact</a><a href="/privacy">Privacy Policy</a>
           </nav>
           <p>North Fork Marketing &copy; {{ current_year }}</p>
         </div>
@@ -51,6 +51,19 @@
         </div>
       </div>
     </footer>
+    {% if request.url.path != '/privacy' %}
+    <dialog id="privacy-notice" class="privacy-notice" aria-labelledby="privacy-notice-title" aria-describedby="privacy-notice-description">
+      <span class="privacy-eyebrow">NORTH FORK MARKETING</span>
+      <h2 id="privacy-notice-title">YOUR PRIVACY MATTERS.</h2>
+      <p id="privacy-notice-description">We don’t sell your information or share it for third-party marketing. Details you send us help us respond to your inquiry. Trusted services help us store messages and deliver alerts.</p>
+      <p class="privacy-note">No advertising trackers. Just browser storage to remember you’ve seen this notice.</p>
+      <div class="privacy-actions">
+        <a href="/privacy">Read our privacy policy</a>
+        <form method="dialog"><button type="submit" autofocus>GOT IT</button></form>
+      </div>
+    </dialog>
+    <script src="{{ url_for('static', path='/js/privacy.js') }}" defer></script>
+    {% endif %}
     <script src="{{ url_for('static', path='/js/admin-shortcut.js') }}" defer></script>
   </body>
 </html>

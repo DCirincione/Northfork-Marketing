@@ -1,3 +1,4 @@
+from hashlib import sha256
 from pathlib import Path
 from datetime import datetime, timezone
 
@@ -34,9 +35,15 @@ async def private_admin_responses(request, call_next):
     return response
 
 app.mount("/static", StaticFiles(directory=BASE_DIR / "static"), name="static")
+def public_template_context(request):
+    stylesheet = BASE_DIR / "static/css/styles.css"
+    return {"current_year": datetime.now(timezone.utc).year,
+            "styles_version": sha256(stylesheet.read_bytes()).hexdigest()[:12]}
+
+
 templates = Jinja2Templates(
     directory=BASE_DIR / "templates",
-    context_processors=[lambda request: {"current_year": datetime.now(timezone.utc).year}],
+    context_processors=[public_template_context],
 )
 
 
@@ -58,6 +65,11 @@ async def about(request: Request):
 @app.get("/contact", response_class=HTMLResponse)
 async def contact(request: Request):
     return templates.TemplateResponse(request=request, name="contact.html")
+
+
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy(request: Request):
+    return templates.TemplateResponse(request=request, name="privacy.html")
 
 
 class ContactSubmission(BaseModel):

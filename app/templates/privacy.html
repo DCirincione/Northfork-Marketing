@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy | North Fork Marketing{% endblock %}
+{% block content %}
+<main id="main" class="privacy-page">
+  <h1>PRIVACY POLICY</h1>
+  <p class="privacy-updated">Last updated: October 21, 2026</p>
+  <p>North Fork Marketing respects your privacy. This policy explains what information this website collects, why we use it, and the services that help us operate the site.</p>
+  <h2>We don’t sell your information</h2>
+  <p>We do not sell or rent your personal information, or share it with third-party organizations for their own marketing or advertising. We use service providers to operate this website, store inquiries, and notify our team. Those services process information as described below. We may also disclose information where required by law.</p>
+  <h2>What we collect and why</h2>
+  <ul>
+    <li><strong>Contact inquiries:</strong> your name, email address, optional phone number, and message, including any business or project details you choose to provide. We use these to reply, discuss services, prepare quotes, and follow up on your request. Please don’t include sensitive information in the message.</li>
+    <li><strong>Inquiry records:</strong> a message ID, submission time, and read status help our team organize and manage inquiries.</li>
+    <li><strong>Technical information:</strong> our hosting and infrastructure providers may process IP addresses, browser and device information, requested URLs, timestamps, and diagnostic logs to deliver the website, troubleshoot problems, and protect the service.</li>
+    <li><strong>Administrator information:</strong> for authorized team members, Supabase processes sign-in credentials and account information to verify access to the private dashboard. Visitors do not need an account.</li>
+  </ul>
+  <h2>Services we use</h2>
+  <ul>
+    <li><strong>Supabase:</strong> stores contact inquiries and client showcase content, hosts uploaded client images, and authenticates administrators. Contact submissions are available through our authorized admin inbox; they are not published in the showcase. <a href="https://supabase.com/privacy">Supabase privacy policy</a>.</li>
+    <li><strong>Vercel:</strong> hosts the website and processes web requests and operational information needed to serve and maintain it. <a href="https://vercel.com/legal/privacy-notice">Vercel privacy notice</a>.</li>
+    <li><strong>ntfy, when enabled:</strong> delivers new-inquiry alerts to our team containing your name, email address, and phone number if supplied. Your message text is not included in these alerts and remains in Supabase.</li>
+    <li><strong>Email and phone providers:</strong> if you contact us directly or we reply by email or phone, the providers involved process those communications to deliver them.</li>
+  </ul>
+  <h2>Cookies and browser storage</h2>
+  <p>We do not use advertising cookies, tracking pixels, or analytics scripts in this website. We store a notice-dismissal preference in your browser’s local storage under <code>nofo-privacy-notice-v1</code> so the first-visit popup stays dismissed on that browser. It is not sent to our server. Clearing site storage or using another browser will show the notice again. If storage is blocked, the notice may reappear.</p>
+  <p>A temporary session-storage value counts logo clicks for the administrator shortcut. Signed-in administrators receive an essential, HTTP-only session cookie named <code>nofo_admin_access</code>, lasting at most one hour. The privacy popup is informational; dismissing it does not opt you into marketing.</p>
+  <h2>Retention and security</h2>
+  <p>We keep inquiry records as needed to respond, manage ongoing business conversations, and meet applicable recordkeeping obligations. This website does not automatically delete inquiries after a fixed period. Service-provider logs and backups may have separate retention periods. We restrict inbox access to authorized administrators and use HTTPS for service connections, but no storage or transmission method is completely secure.</p>
+  <h2>Your choices and requests</h2>
+  <p>You can browse without submitting a contact form and leave the phone field blank. To request access, correction, or deletion of information you have provided, or to ask us to stop following up, email <a href="mailto:northforkmarketing@gmail.com">northforkmarketing@gmail.com</a> or call <a href="tel:+16319059595">(631) 905-9595</a>. We may need to verify your identity before handling a request. Applicable law may provide additional rights or require us to retain certain records.</p>
+  <h2>Links to other websites</h2>
+  <p>Client websites, Instagram, and TikTok are external sites. When you follow their links, their own privacy policies apply.</p>
+  <h2>Changes to this policy</h2>
+  <p>We will update this page and the date above when our practices change. Contact North Fork Marketing using the details above with any privacy questions.</p>
+</main>
+{% endblock %}
